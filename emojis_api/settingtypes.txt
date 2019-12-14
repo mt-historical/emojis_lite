@@ -1,0 +1,12 @@
+# Gain of emoji sounds
+emojis_api_sound_gain (Gain of emojis sounds) float 1 0 10
+
+# Duration after which emoji despawns
+emojis_lite_duration (Duration of the emoji) float 4 0 60
+
+# Should emojis glow
+emojis_lite_glow (Should emojis glow) bool false
+
+# Emoji size
+emojis_lite_size (Size of the emoji particle) float 6 0 30
+
