@@ -26,6 +26,8 @@ end
 local function build_emoji_list()
     local counter = 0
     local scale_factor = (4/emojis_per_row)*2
+    local missing_rows = math.floor(((emojis_per_row * emojis_per_row) - total_emojis)/emojis_per_row)
+    local ydisp = (scale_factor/2)*missing_rows
     for k,v in pairs(emojis_api.emojis) do
         local ypos = math.floor(counter/emojis_per_row)
         local xpos = counter % emojis_per_row
@@ -33,7 +35,7 @@ local function build_emoji_list()
             "image_button[" ..
             xpos*scale_factor ..
             "," ..
-            ypos*scale_factor ..
+            (ypos*scale_factor)+0.4+ydisp ..
             ";" ..
             scale_factor ..
             "," ..
