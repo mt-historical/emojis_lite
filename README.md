@@ -3,7 +3,7 @@
 ![Screenshot](screenshot.png)
 
 ## Overview
-Emojis_lite adds an inventory menu, from which a player can display various emojis. The mod also provides an api for easy emoji registration.
+Emojis_lite adds an inventory menu, from which a player can display various emojis. The mod also provides an api for easy emoji registration. This mod is an independent implementation of idea from [this mod](https://github.com/bosapara/emoji) by Bosapara.
 
 ## Requirements
 
@@ -20,6 +20,8 @@ emojis_api.register_emoji(name, image, sound)
 - name - unique id of the emoji. Please use only alphanumeric symbols, since this ID is used in the formspec string.
 - image - name of the image file to use
 - sound - name of the sound file to play
+
+The emoji grid will scale automatically so there's no need worry about excess emojis.
 
 
 ## Settingtypes
