@@ -49,26 +49,26 @@ local function build_emoji_list()
     end
 end
 
-local function formspec_action(self, player, context, fields)
+local function play_emoji(pos, emojidef)
+    minetest.add_particle({
+        pos = {x=pos.x, y=pos.y+2, z=pos.z},
+        velocity = {x=0, y=0.5, z=0},
+        expirationtime = emoji_duration,
+        size = emoji_size,
+        glow = emoji_light_level,
+        texture = emojidef.image,
+    })
+    minetest.sound_play(emojidef.sound, {pos=pos, gain=emoji_sound_gain, max_hear_distance=2*64})
+end
+
+local function formspec_action(player, context, fields)
     local pos = player:get_pos()
     for k,_ in pairs(fields) do
         if k == "quit" then return end
-        local emojidef = emojis_api.emojis[k]
-        minetest.add_particle({
-            pos = {x=pos.x, y=pos.y+2, z=pos.z},
-            velocity = {x=0, y=0.5, z=0},
-            expirationtime = emoji_duration,
-            size = emoji_size,
-            glow = emoji_light_level,
-            texture = emojidef.image,
-        })
-        minetest.sound_play(emojidef.sound, {pos=pos, gain=emoji_sound_gain, max_hear_distance=2*64})
+        if not emojis_api.emojis[k] then return end
+        play_emoji(pos, emojis_api.emojis[k])
         break
     end
-end
-
-local function get_emoji_list(self, player, context)
-    return sfinv.make_formspec(player, context, emoji_formspec, false)
 end
 
 local function process_emojis()
@@ -81,10 +81,39 @@ end
 
 minetest.register_on_mods_loaded(process_emojis)
 
-sfinv.register_page("emojis_api:emojis",
-    {
-        title = "Emojis",
-        get = get_emoji_list,
-        on_player_receive_fields = formspec_action,
-    }
-)
+minetest.register_chatcommand("emoji_board", {
+    params = "[<emoji>]",
+    description = "Open the emoji board or use <emoji>",
+    func = function(pname, param)
+        if param == "" or not param then
+            minetest.show_formspec(pname, "emojis_api:emoji_board", "size[8,8.6]" .. emoji_formspec)
+            return true
+        else
+            if not emojis_api.emojis[param] then return false, "Invalid emoji: " .. param end
+            play_emoji(minetest.get_player_by_name(pname):get_pos(), emojis_api.emojis[param])
+            return true
+        end
+    end,
+})
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+    if formname ~= ("emojis_api:emoji_board") then return end
+    if not player then return end
+
+    formspec_action(player, {}, fields)
+end)
+
+-- Optional
+-----------
+
+if sfinv then
+    sfinv.register_page("emojis_api:emojis",
+        {
+            title = "Emojis",
+            get = function(self, player, context)
+                return sfinv.make_formspec(player, context, emoji_formspec, false)
+            end,
+            on_player_receive_fields = function(self, ...) formspec_action(...) end,
+        }
+    )
+end

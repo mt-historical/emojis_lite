@@ -1,1 +1,0 @@
-An emoji pack for emojis_api, resembling old php forum smiles
