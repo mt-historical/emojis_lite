@@ -3,7 +3,7 @@
 ![Screenshot](screenshot.png)
 
 ## Overview
-Emojis_lite adds an inventory menu, from which a player can display various emojis. The mod also provides an api for easy emoji registration. This mod is an independent implementation of idea from [this mod](https://github.com/bosapara/emoji) by Bosapara.
+Emojis_lite adds a `sfinv` inventory menu and an `/emoji_board` command, from which a player can display various emojis. The mod also provides an api for easy emoji registration. This mod is an independent implementation of idea from [this mod](https://github.com/bosapara/emoji) by Bosapara.
 
 ## Requirements
 
